@@ -36,6 +36,7 @@ model Profile {
   Id                    String                      @id @default(uuid())
   userId                String                      @db.Char(36)
   User                  User                        @relation(fields: [userId], references: [Id], onDelete: Cascade, onUpdate: NoAction )
+  Requetes              Requete 
 
 }
 
@@ -88,8 +89,10 @@ model IdentificationSIM {
 
 model Requete {
   Id                    String                      @id @default(uuid())
+  
   CreatedAt             DateTime                    @default(now())
   UpdatedAt             DateTime                    @default(now())
   UpdateBy              String ?
-  CreatedBy             String ?
+  CreatedBy             String                      @db.Char(36)
+  User                  User                        @relation(fields: [CreatedBy], references: [Id], onDelete: Cascade, onUpdate: NoAction )
 }

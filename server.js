@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 
 import userRoute from "./routes/user.js";
 import authRoute from "./routes/auth.js";
+import remplRoute from "./routes/remplacementSIM.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json())
 
 app.use("/user", userRoute);
 app.use("/auth", authRoute);
+app.use("/remplsim", remplRoute);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)

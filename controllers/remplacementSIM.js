@@ -42,5 +42,3 @@ export const getAllRemplacementSIM = async (req, res) => {}
 export const updateRemplacementSIM = async (req, res) => {}
 export const deleteOneRemplacementSIM = async (req, res) => {}
 export const deleteMultipleRemplacementSIM = async (req, res) => {}
-
-
