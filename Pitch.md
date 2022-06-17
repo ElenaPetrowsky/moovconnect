@@ -27,6 +27,6 @@
 * **10h38: La gestion du stress:**
   - Peur de se tromper  
 > La prise de parole en public est une question d'habitue
-> 
+> Plutôt penser succès que échec
   - taille de l'auditoire
   - Influence des personnes du public

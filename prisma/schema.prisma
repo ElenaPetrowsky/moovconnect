@@ -13,11 +13,16 @@ datasource db {
 model User {
   Id          String    @id @default(uuid())
   Role        Role      @default(CLIENT)
+  Phone       String    @unique()
+  RelatedOtp  String?
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @default(now())
+  IsActivated Boolean   @default(false)
   UpdateBy    String ?
   CreatedBy   String ?
   Profile     Profile?
+
+  @@index([Phone], name:"numero_index")
 
 }
 
@@ -31,6 +36,7 @@ model Profile {
   Id                    String                      @id @default(uuid())
   userId                String                      @db.Char(36)
   User                  User                        @relation(fields: [userId], references: [Id], onDelete: Cascade, onUpdate: NoAction )
+
 }
 
 model RemplacementSIM {

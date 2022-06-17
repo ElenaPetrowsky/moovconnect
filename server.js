@@ -1,6 +1,7 @@
 // const express = require('express');
 // const bodyParser = require('body-parser');  Importation en mode commonjs
 
+import { config } from 'dotenv';
 import express from "express";
 import bodyParser from "body-parser";
 

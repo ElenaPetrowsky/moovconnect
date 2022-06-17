@@ -1,9 +1,9 @@
 import express from "express";
+import {createUser, verifyUser} from "../controllers/user.js";
 
 const router = express.Router();
 
-router.get("/", (req, res)=>{
-    res.send("Hello world");
-});
+router.post("/create", createUser);
+router.post("/verification",verifyUser);
 
 export default router;
