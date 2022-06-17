@@ -41,6 +41,14 @@ model Profile {
 
 model RemplacementSIM {
   Id                    String                      @id @default(uuid())
+  Reference             String
+  DateNaisCli           String
+  Localisation          String ?  //Lieu d'habitation du client
+  NumMSISDN             String
+  AncienICCID           String ?
+  NewICCID              String
+  TypePiece             String
+  NumPiece              String
   CreatedAt             DateTime                    @default(now())
   UpdatedAt             DateTime                    @default(now())
   UpdateBy              String ?
@@ -50,6 +58,27 @@ model RemplacementSIM {
 
 model IdentificationSIM {
   Id                    String                      @id @default(uuid())
+  TelPrincipal          String
+  TelSecondaire         String
+  TypePiece             String
+  NumPiece              String
+  LieuPiece             String
+  DateEmPiece           DateTime
+  DateExPiece           DateTime
+  CiviliteCli           String
+  GenreCli              String
+  NomCli                String
+  PrenomCli             String
+  LieuNaisCli           String
+  DateNaisCli           String
+  ProfCli               String
+  AdrGeoCli             String 
+  Nationalite           String
+  Photo                 String
+  PhotoVerso            String
+  PhotoRecto            String
+  AdrPostale            String ?
+  Pays                  String ?
   CreatedAt             DateTime                    @default(now())
   UpdatedAt             DateTime                    @default(now())
   UpdateBy              String ?
