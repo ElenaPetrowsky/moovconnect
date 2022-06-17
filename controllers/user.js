@@ -3,9 +3,6 @@ import { v4 as uuidv4 } from 'uuid'
 import jwt from 'jsonwebtoken'
 
 const { PrismaClient } = Prisma
-
-
-
 const prisma = new PrismaClient()
 
 export const createUser = async (req, res) => {
