@@ -1,6 +1,8 @@
-function authenticationToken(req, res, next) {
-    const token = req.header('x-auth-token');
+import jwt from 'jsonwebtoken'
 
+export const authenticationToken = async (req, res, next)=> {
+    const token = req.headers.authorization.split(' ')[1]
+    
     if (!token) {
         return res.status(401).json({ message: "Veuillez préciser le token d'autorisation"});
     }
@@ -8,6 +10,7 @@ function authenticationToken(req, res, next) {
     try {
         req.user = jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
+        console.log(err)
         return res.status(403).json({ message: 'Le token que vous avez rensieigné est invalide' });
     }
 
