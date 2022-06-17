@@ -42,6 +42,7 @@ model Profile {
 model RemplacementSIM {
   Id                    String                      @id @default(uuid())
   Reference             String
+  Motif                 String
   DateNaisCli           String
   Localisation          String ?  //Lieu d'habitation du client
   NumMSISDN             String
@@ -49,12 +50,15 @@ model RemplacementSIM {
   NewICCID              String
   TypePiece             String
   NumPiece              String
+  Statut                String                      @default("En attente")
   CreatedAt             DateTime                    @default(now())
   UpdatedAt             DateTime                    @default(now())
   UpdateBy              String ?
   CreatedBy             String ?
 
 }
+
+
 
 model IdentificationSIM {
   Id                    String                      @id @default(uuid())
@@ -79,6 +83,7 @@ model IdentificationSIM {
   PhotoRecto            String
   AdrPostale            String ?
   Pays                  String ?
+  Statut                String                      @default("En attente")
   CreatedAt             DateTime                    @default(now())
   UpdatedAt             DateTime                    @default(now())
   UpdateBy              String ?
@@ -88,6 +93,7 @@ model IdentificationSIM {
 
 model Requete {
   Id                    String                      @id @default(uuid())
+  Statut                String                      @default("En attente")
   CreatedAt             DateTime                    @default(now())
   UpdatedAt             DateTime                    @default(now())
   UpdateBy              String ?

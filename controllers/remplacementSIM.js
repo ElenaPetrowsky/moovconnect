@@ -35,6 +35,24 @@ export const createRemplacementSIM = async (req, res) => {
     var dateInStantT = new Date(Date.now()).toISOString;
    
 
+    const rem = await prisma.RemplacementSIM.create({
+        data: {
+            Id: uuidv4(),
+            Reference: dateInStantT,
+            Motif : Motif,
+            DateNaissCli: DateNaissCli,
+            Localisation: Localisation,
+            NumMSISDN: Phone,
+            AncienICCID: AncienICCID,
+            NewICCID: NewICCID,
+            TypePiece: TypePiece,
+            NumPiece: NumPiece,
+            
+        }
+    })
+    res.status(200).json({
+        message: "Enregistrement effectué avec succès"
+    })
 
 }
 export const getOneRemplacementSIM = async (req, res) => {}
