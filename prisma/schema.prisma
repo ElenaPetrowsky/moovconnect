@@ -11,16 +11,19 @@ datasource db {
 }
 
 model User {
-  Id          String    @id @default(uuid())
-  Role        Role      @default(CLIENT)
-  Phone       String    @unique()
-  RelatedOtp  String?
-  CreatedAt   DateTime  @default(now())
-  UpdatedAt   DateTime  @default(now())
-  IsActivated Boolean   @default(false)
-  UpdateBy    String ?
-  CreatedBy   String ?
-  Profile     Profile?
+  Id                                        String                      @id @default(uuid())
+  Role                                      Role                        @default(CLIENT)
+  Phone                                     String                      @unique()
+  RelatedOtp                                String?
+  CreatedAt                                 DateTime                    @default(now())
+  UpdatedAt                                 DateTime                    @default(now())
+  IsActivated                               Boolean                     @default(false)
+  UpdateBy                                  String ?
+  CreatedBy                                 String ?
+  Profile                                   Profile?
+  Requete                                   Requete[]
+  RemplacementSIM                           RemplacementSIM[]
+  IdentificationSIM                         IdentificationSIM[]
 
   @@index([Phone], name:"numero_index")
 
@@ -36,13 +39,13 @@ model Profile {
   Id                    String                      @id @default(uuid())
   userId                String                      @db.Char(36)
   User                  User                        @relation(fields: [userId], references: [Id], onDelete: Cascade, onUpdate: NoAction )
-  Requetes              Requete 
 
 }
 
 model RemplacementSIM {
   Id                    String                      @id @default(uuid())
-  Reference             String
+  Reference             String                      @unique()
+  Motif                 String
   DateNaisCli           String
   Localisation          String ?  //Lieu d'habitation du client
   NumMSISDN             String
@@ -50,12 +53,16 @@ model RemplacementSIM {
   NewICCID              String
   TypePiece             String
   NumPiece              String
+  Statut                String                      @default("En attente")
   CreatedAt             DateTime                    @default(now())
   UpdatedAt             DateTime                    @default(now())
   UpdateBy              String ?
-  CreatedBy             String ?
-
+  CreatedBy             String                      @db.Char(36)
+  User                  User                        @relation(fields: [CreatedBy], references: [Id], onDelete: Cascade, onUpdate: NoAction)
+  @@index([Reference], name:"index_ref_remplacement")
 }
+
+
 
 model IdentificationSIM {
   Id                    String                      @id @default(uuid())
@@ -75,21 +82,23 @@ model IdentificationSIM {
   ProfCli               String
   AdrGeoCli             String 
   Nationalite           String
-  Photo                 String
-  PhotoVerso            String
-  PhotoRecto            String
+  Photo                 Bytes
+  PhotoVerso            Bytes
+  PhotoRecto            Bytes
   AdrPostale            String ?
   Pays                  String ?
+  Statut                String                      @default("En attente")
   CreatedAt             DateTime                    @default(now())
   UpdatedAt             DateTime                    @default(now())
   UpdateBy              String ?
-  CreatedBy             String ?
+  CreatedBy             String                      @db.Char(36)
+  User                  User                        @relation(fields: [CreatedBy], references: [Id], onDelete: Cascade, onUpdate: NoAction)
 
 }
 
 model Requete {
   Id                    String                      @id @default(uuid())
-  
+  Statut                String                      @default("En attente")
   CreatedAt             DateTime                    @default(now())
   UpdatedAt             DateTime                    @default(now())
   UpdateBy              String ?

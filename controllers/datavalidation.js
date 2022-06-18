@@ -7,7 +7,7 @@ export const isChiffre = (variable)=> {
 }
 
 export const isLettre = (variable)=> {
-    let reg = /[^a-zA-Z]/
+    let reg = /^[a-zA-Z]*$/
 
     return reg.test(variable) ?  true : false
 }

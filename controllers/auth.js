@@ -35,7 +35,7 @@ export const createUser = async (req, res) => {
     //         error: "Ce numéro de téléphone est déjà utilisé"
     //     })
     // }
-    const otp = Math.floor(Math.random() * 1000000)
+    const otp = Math.floor(Math.random() * 10000)
     if(!oldUser) {
         const user = await prisma.user.create({
             data: {
@@ -44,7 +44,19 @@ export const createUser = async (req, res) => {
                 IsActivated: false,
                 RelatedOtp: otp.toString()
             }
-        })
+        }).then(data =>{
+            return res.status(200).json({
+                state:true,
+                message: "Veuillez renseigner le code de vérification reçu par SMS"
+            })
+        }).catch(err => {
+            console.log(err)
+            let error = "Une erreur interne au serveur s'est produite";
+            let status = 500;
+            res.status(status).json({
+                error: error
+            })
+          })
     }else{
         const user = await prisma.user.update({
             where: {
@@ -54,13 +66,23 @@ export const createUser = async (req, res) => {
                 IsActivated: false,
                 RelatedOtp: otp.toString()
             }
+        }).then(data =>{
+            return res.status(200).json({
+                state:true,
+                message: "Veuillez renseigner le code de vérification reçu par SMS"
+            })
         })
+          .catch(err=>{
+            console.log(err)
+            let error = "Une erreur interne au serveur s'est produite";
+            let status = 500;
+            res.status(status).json({
+                error: error
+            })
+          })
     }
     console.log(otp)
     //sendSMS(`225${user.Phone}`, `MOOV CONNECT\nCher(e) client(e), votre code de vérification est ${user.Otp}`)
-    res.status(200).json({
-        message: "Veuillez renseigner le code de vérification reçu par SMS"
-    })
 
 }
 
@@ -73,6 +95,7 @@ export const verifyUser = async (req, res) => {
     })
     if(otp != user.RelatedOtp) {
         res.status(400).json({
+            state:false,
             error: "Le code de vérification est incorrect, veuillez réessayer"
         })
     }
@@ -94,7 +117,8 @@ export const verifyUser = async (req, res) => {
       );
 
     res.status(200).json({
+        state: true,
+        message: "Votre numéro de téléphone a été vérifié",
         accessToken: accessToken,
-        message: "Votre numéro de téléphone a été vérifié"
     })
 }
