@@ -12,7 +12,7 @@ export const isLettre = (variable)=> {
     return reg.test(variable) ?  true : false
 }
 
-export const regNumPiece = (variable)=> {
+export const isNumPiece = (variable)=> {
     let reg = /[^a-zA-Z0-9]/
 
     return reg.test(variable) ?  true : false

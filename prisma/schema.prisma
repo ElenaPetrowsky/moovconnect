@@ -14,17 +14,16 @@ model User {
   Id                                        String                      @id @default(uuid())
   Role                                      Role                        @default(CLIENT)
   Phone                                     String                      @unique()
-  RelatedOtp                                String?
+  RelatedOtp                                String ?
   CreatedAt                                 DateTime                    @default(now())
   UpdatedAt                                 DateTime                    @default(now())
   IsActivated                               Boolean                     @default(false)
   UpdateBy                                  String ?
   CreatedBy                                 String ?
-  Profile                                   Profile?
+  Profile                                   Profile ?
   Requete                                   Requete[]
   RemplacementSIM                           RemplacementSIM[]
   IdentificationSIM                         IdentificationSIM[]
-
   @@index([Phone], name:"numero_index")
 
 }
@@ -55,7 +54,7 @@ model RemplacementSIM {
   NumPiece              String
   Statut                String                      @default("En attente")
   CreatedAt             DateTime                    @default(now())
-  UpdatedAt             DateTime                    @default(now())
+  UpdatedAt             DateTime                    @updatedAt
   UpdateBy              String ?
   CreatedBy             String                      @db.Char(36)
   User                  User                        @relation(fields: [CreatedBy], references: [Id], onDelete: Cascade, onUpdate: NoAction)
@@ -89,7 +88,7 @@ model IdentificationSIM {
   Pays                  String ?
   Statut                String                      @default("En attente")
   CreatedAt             DateTime                    @default(now())
-  UpdatedAt             DateTime                    @default(now())
+  UpdatedAt             DateTime                    @updatedAt
   UpdateBy              String ?
   CreatedBy             String                      @db.Char(36)
   User                  User                        @relation(fields: [CreatedBy], references: [Id], onDelete: Cascade, onUpdate: NoAction)
@@ -100,8 +99,8 @@ model Requete {
   Id                    String                      @id @default(uuid())
   Statut                String                      @default("En attente")
   CreatedAt             DateTime                    @default(now())
-  UpdatedAt             DateTime                    @default(now())
+  UpdatedAt             DateTime                    @updatedAt
   UpdateBy              String ?
   CreatedBy             String                      @db.Char(36)
-  User                  User                        @relation(fields: [CreatedBy], references: [Id], onDelete: Cascade, onUpdate: NoAction )
+  User                  User                        @relation(fields: [CreatedBy], references: [Id], onDelete: Cascade, onUpdate: NoAction)
 }
