@@ -67,7 +67,7 @@ export const createRemplacementSIM = async (req, res) => {
 export const getOneRemplacementSIM = async (req, res) => {
     const replacement = await prisma.RemplacementSIM.findMany({
         where: {
-            CreatedBy: req.user.Id
+            CreatedBy: req.params.id
         }
     }).then(data =>{
         return res.status(200).json({
@@ -101,6 +101,74 @@ export const getAllRemplacementSIM = async (req, res) => {
     })
 }
 export const updateRemplacementSIM = async (req, res) => {
+
+    const {
+        NumMSISDN,AncienICCID,NewICCID,Motif, 
+        TypePiece,NumPiece,NomCli,
+        PrenomCli,DateNaisCli,Localisation,
+    } = req.body
+
+    const remplSIM = {}
+
+    if(NumMSISDN !== undefined && NumMSISDN !== "" && isChiffre(NumMSISDN)){
+        remplSIM.NumMSISDN = NumMSISDN
+    }
+
+    if(AncienICCID !== undefined && AncienICCID !== "" && isChiffre(AncienICCID)){
+        remplSIM.AncienICCID = AncienICCID
+    }
+    
+    if(NewICCID !== undefined && NewICCID !== "" && isChiffre(NewICCID)){
+        remplSIM.NewICCID = NewICCID
+    }
+
+    if(Motif !== undefined && Motif !== "" && isLettre(Motif)){
+        remplSIM.Motif = Motif
+    }
+
+    if(TypePiece !== undefined && TypePiece !== null){
+        remplSIM.TypePiece = TypePiece
+    }
+
+    if(NumPiece !== undefined && NumPiece !== ""){
+        remplSIM.NumPiece = NumPiece
+    }
+
+    if(NomCli !== undefined && NomCli !== "" && isLettre(NomCli)){
+        remplSIM.NomCli = NomCli
+    }
+
+    if(PrenomCli !== undefined && PrenomCli !== "" && isLettre(PrenomCli)){
+        remplSIM.PrenomCli = PrenomCli
+    }    
+    
+    if(DateNaisCli !== undefined && DateNaisCli !== null){
+        remplSIM.DateNaisCli = DateNaisCli
+    }
+
+    if(Localisation !== undefined && Localisation !== ""){
+        remplSIM.Localisation = Localisation
+    }
+
+    prisma.remplacementSIM.update({
+        where: {
+            Id: req.params.id
+        },
+        data: identifSIM
+    
+    }).then(data=>{
+        return res.status(200).send({
+            message: "Modifié avec succès.",
+            data: data
+        })
+
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({
+            error: "Une erreur interne au serveur s'est produite."
+        })
+
+    })
 
 }
 export const deleteOneRemplacementSIM = async (req, res) => {}
