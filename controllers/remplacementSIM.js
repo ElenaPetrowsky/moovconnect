@@ -69,7 +69,7 @@ export const createRemplacementSIM = async (req, res) => {
 export const getOneRemplacementSIM = async (req, res) => {
     prisma.RemplacementSIM.findUnique({
         where: {
-            CreatedBy: req.user.Id
+            CreatedBy: req.params.id
         }
     }).then(data =>{
         return res.status(200).json({
@@ -159,7 +159,7 @@ export const updateRemplacementSIM = async (req, res) => {
 
     prisma.remplacementSIM.update({
         where: {
-            Id: req.user.Id
+            Id: req.params.id
         },
         data: identifSIM
     
