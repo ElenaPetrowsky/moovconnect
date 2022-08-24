@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 
 import userRoute from "./routes/user.js";
 import authRoute from "./routes/auth.js";
+import identifRoute from "./routes/identificationSIM.js";
 import remplRoute from "./routes/remplacementSIM.js";
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(bodyParser.json())
 
 app.use("/user", userRoute);
 app.use("/auth", authRoute);
+app.use("/identif", identifRoute);
 app.use("/remplsim", remplRoute);
 
 app.listen(port, () => {

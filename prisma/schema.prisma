@@ -36,7 +36,7 @@ enum Role {
 
 model Profile {
   Id                    String                      @id @default(uuid())
-  userId                String                      @db.Char(36)
+  userId                String                      @unique @db.Char(36)
   User                  User                        @relation(fields: [userId], references: [Id], onDelete: Cascade, onUpdate: NoAction )
 
 }

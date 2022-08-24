@@ -2,7 +2,7 @@ import Prisma from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid'
 import { isChiffre, isLettre, isNumPiece } from './datavalidation.js'
 
-
+const multer = require('multer')
 const { PrismaClient } = Prisma
 const prisma = new PrismaClient()
 
@@ -14,6 +14,15 @@ export const createIdentificationSIM = async (req, res) => {
         ProfCli, CiviliteCli, Nationalite, AdrGeoCli, Pays, AdrPostale,
         TelPrincipal, TelSecondaire, NumPiece, LieuPiece, DateExPiece, DateEmPiece, TypePiece
     } = req.body
+
+    const fileStorage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, "../images");
+        },
+        filename: (req, file, cb) => {
+            cb(null, uuidv4() + file.mimetype)
+        }
+    })
 
     if(NomCli===undefined || NomCli==="" || ! isLettre(NomCli)){
         error = "Le nom du demandeur est obligatoire, ne peut pas être vide et doit être uniquement contitué de lettres"
@@ -81,6 +90,9 @@ export const createIdentificationSIM = async (req, res) => {
             ProfCli: ProfCli,
             AdrGeoCli: AdrGeoCli,
             Nationalite: Nationalite,
+            Photo: uuidv4(),
+            PhotoVerso: uuidv4(),
+            PhotoRecto: uuidv4(),
             AdrPostale: AdrPostale,
             Pays: Pays,
             GenreCli: GenreCli,
@@ -156,6 +168,10 @@ export const updateIdentificationSIM = async (req, res) => {
         identifSIM.PrenomCli = PrenomCli
     }
 
+    if(DateNaisCli !== undefined && DateNaisCli !== ""){
+        identifSIM.DateNaisCli = DateNaisCli
+    }
+
     if(LieuNaisCli !== undefined && LieuNaisCli !== "" && isLettre(LieuNaisCli)){
         identifSIM.LieuNaisCli = LieuNaisCli
     }
@@ -168,16 +184,44 @@ export const updateIdentificationSIM = async (req, res) => {
         identifSIM.ProfCli = ProfCli
     }
 
+    if(Nationalite !== undefined && Nationalite !== "" && isLettre(Nationalite)){
+        identifSIM.Nationalite = Nationalite
+    }
+
     if(AdrGeoCli !== undefined && AdrGeoCli !== "" && isLettre(AdrGeoCli)){
         identifSIM.AdrGeoCli = AdrGeoCli
     }
 
+    if(Pays !== undefined && Pays !== "" && isLettre(Pays)){
+        identifSIM.Pays = Pays
+    }
+
+    if(AdrPostale !== undefined && AdrPostale !== ""){
+        identifSIM.AdrPostale = AdrPostale
+    }
+
+    if(TelPrincipal !== undefined && TelPrincipal !== ""){
+        identifSIM.TelPrincipal = TelPrincipal
+    }
+
+    if(TelSecondaire !== undefined && TelSecondaire !== ""){
+        identifSIM.TelSecondaire = TelSecondaire
+    }
+
     if(NumPiece !== undefined && NumPiece !== "" && isNumPiece(NumPiece)){
         identifSIM.NumPiece = NumPiece
-    }    
+    }
+    
+    if(LieuPiece !== undefined && LieuPiece !== ""){
+        identifSIM.LieuPiece = LieuPiece
+    }
 
-    if(Nationalite !== undefined && Nationalite !== "" && isLettre(Nationalite)){
-        identifSIM.Nationalite = Nationalite
+    if(DateEmPiece !== undefined && DateEmPiece !== "" && DateEmPiece !== null){
+        identifSIM.DateEmPiece = DateEmPiece
+    }
+
+    if(DateExPiece !== undefined && DateExPiece !== "" && DateExPiece !== null){
+        identifSIM.DateExPiece = DateExPiece
     }
 
     if(TypePiece !== undefined && TypePiece !== ""){

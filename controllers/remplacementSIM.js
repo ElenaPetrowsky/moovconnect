@@ -179,5 +179,11 @@ export const updateRemplacementSIM = async (req, res) => {
 
 }
 
-export const deleteOneRemplacementSIM = async (req, res) => {}
+export const deleteOneRemplacementSIM = async (req, res) => {
+    prisma.remplacementSIM.delete({
+        where: {
+            Id: req.params.id
+        }
+    })
+}
 export const deleteMultipleRemplacementSIM = async (req, res) => {}
