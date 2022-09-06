@@ -29,14 +29,25 @@ export const getAllUser = async (req, res) => {
 
 }
 export const getOneUser = async (req, res) => {
-    // return res.send('getOneUserUser')
+    //find a user
     prisma.user.findUnique({
-        where:{
-            Id: req.params.id            
+        where: {
+            Id: req.params.id
         }
+    }).then(data => {
+        return res.status(200).json({
+            data: data
+        })
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({
+            error: "Une erreur interne au serveur s'est produite"
+        })
     })
 
 }
-export const updateUser = async (req, res) => {}
+export const updateUser = async (req, res) => {
+    
+}
 export const deleteOneUser = async (req, res) => {}
 export const deleteMultipleUser = async (req, res) => {}

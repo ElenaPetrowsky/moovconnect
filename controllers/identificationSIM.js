@@ -1,13 +1,18 @@
 import Prisma from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid'
 import { isChiffre, isLettre, isNumPiece } from './datavalidation.js'
+import multer from 'multer'
 
-const multer = require('multer')
+
 const { PrismaClient } = Prisma
 const prisma = new PrismaClient()
 
 export const createIdentificationSIM = async (req, res) => {
     let error = null
+    const img = uuidv4()
+    const img_verso = uuidv4()
+    const img_recto = uuidv4()
+    
 
     const {
         NomCli,PrenomCli, DateNaisCli, LieuNaisCli, GenreCli,
@@ -24,31 +29,33 @@ export const createIdentificationSIM = async (req, res) => {
         }
     })
 
-    if(NomCli===undefined || NomCli==="" || ! isLettre(NomCli)){
+    
+
+    if(NomCli === undefined || NomCli === "" || !isLettre(NomCli)){
         error = "Le nom du demandeur est obligatoire, ne peut pas être vide et doit être uniquement contitué de lettres"
     }
 
-    if(PrenomCli===undefined || PrenomCli==="" || ! isLettre(PrenomCli)){
+    if(PrenomCli === undefined || PrenomCli === "" || !isLettre(PrenomCli)){
         error = "Le prénom du demandeur est obligatoire, ne peut pas être vide et doit être uniquement contitué de lettres"
     }
 
-    if(LieuNaisCli===undefined || LieuNaisCli==="" || ! isLettre(LieuNaisCli)){
+    if(LieuNaisCli === undefined || LieuNaisCli === "" || !isLettre(LieuNaisCli)){
         error = "Le lieu de naissance doit être spécifié"
     }
     
-    if(CiviliteCli===undefined || CiviliteCli==="" || ! isLettre(CiviliteCli)){
+    if(CiviliteCli === undefined || CiviliteCli === "" || !isLettre(CiviliteCli)){
         error = "La civilite doit être uniquement contitué de lettres"
     }
 
-    if(ProfCli === undefined || ProfCli === "" || ! isLettre(ProfCli)){
+    if(ProfCli === undefined || ProfCli === "" || !isLettre(ProfCli)){
         error = "Le profession est obligatoire, ne peut pas être vide et doit être uniquement contitué de lettres"
     }
 
-    if(AdrGeoCli === undefined || AdrGeoCli === "" || ! isLettre(AdrGeoCli)){
+    if(AdrGeoCli === undefined || AdrGeoCli === "" || !isLettre(AdrGeoCli)){
         error = "L'adresse géographique doit être spécifiée et pas constituée de chiffres"
     }
 
-    if(NumPiece === undefined || NumPiece === "" || !  isNumPiece(NumPiece)){
+    if(NumPiece === undefined || NumPiece === "" || !isNumPiece(NumPiece)){
         error = "Le numéro de la pièce doit être spécifié"
     }
 
@@ -56,7 +63,7 @@ export const createIdentificationSIM = async (req, res) => {
         error = "Le type de la pièce choisit doit être spécifiée"
     }
 
-    if(ProfCli === undefined || Nationalite === "" || ! isLettre(Nationalite)){
+    if(ProfCli === undefined || Nationalite === "" || !isLettre(Nationalite)){
         error = "La nationalité est obligatoire et doit être uniquement constitué de lettres"
     }
 
@@ -90,9 +97,9 @@ export const createIdentificationSIM = async (req, res) => {
             ProfCli: ProfCli,
             AdrGeoCli: AdrGeoCli,
             Nationalite: Nationalite,
-            Photo: uuidv4(),
-            PhotoVerso: uuidv4(),
-            PhotoRecto: uuidv4(),
+            Photo: img,
+            PhotoVerso: img_verso,
+            PhotoRecto: img_recto,
             AdrPostale: AdrPostale,
             Pays: Pays,
             GenreCli: GenreCli,
@@ -151,7 +158,7 @@ export const getAllIdentificationSIM = async (req, res) => {
 }
 
 export const updateIdentificationSIM = async (req, res) => {
-
+   
     const {
         NomCli,PrenomCli, DateNaisCli, LieuNaisCli, GenreCli,
         ProfCli, CiviliteCli, Nationalite, AdrGeoCli, Pays, AdrPostale,

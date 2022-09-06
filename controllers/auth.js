@@ -1,7 +1,7 @@
 import Prisma from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
-import { sendMessage } from "./datavalidation.js";
+import { isChiffre, sendMessage } from "./datavalidation.js";
 
 
 const { PrismaClient } = Prisma;
@@ -11,8 +11,7 @@ export const createUser = async (req, res) => {
   let error = null;
   const { Phone } = req.body;
 
-  const reg = /^\d{10}$/;
-  if (!reg.test(Phone)) {
+  if (!isChiffre(Phone)) {
     error = "Le format du numéro de téléphone est incorrect";
   }
 

@@ -1,5 +1,5 @@
 // import express
-import { express } from 'express';
+import  express  from 'express';
 
 import {getOneRequete, getAllRequete, createRequete, 
         deleteRequete, updateRequete } from '../controllers/requete.js';
