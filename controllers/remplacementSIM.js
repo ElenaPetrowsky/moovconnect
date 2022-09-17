@@ -11,8 +11,7 @@ export const createRemplacementSIM = async (req, res) => {
 
     const {
         NumMSISDN, Motif, AncienICCID, NewICCID,
-        TypePiece, NumPiece, NomCli,
-        PrenomCli, DateNaisCli, Localisation,
+        TypePiece, NumPiece, DateNaisCli, Localisation
     } = req.body
 
     if (NewICCID === undefined || NewICCID === "") {
@@ -23,19 +22,12 @@ export const createRemplacementSIM = async (req, res) => {
         error = "Le motif de la demande doit être spécifié"
     }
 
-    if (PrenomCli === undefined || PrenomCli === "" || !isLettre(PrenomCli)) {
-        error = "Le prénom du demandeur est obligatoire, ne peut pas être vide et doit être uniquement contitué de lettres"
-    }
-    if (NomCli === undefined || NomCli === "" || !isLettre(NomCli)) {
-        error = "Le nom du demandeur est obligatoire, ne peut pas être vide et doit être uniquement contitué de lettres"
-    }
     if (error && error !== undefined) {
         res.status(400).json({
             error: error
         })
     }
     var dateInstantT = new Date(Date.now()).toISOString();
-
 
     prisma.RemplacementSIM.create({
         data: {
@@ -49,12 +41,12 @@ export const createRemplacementSIM = async (req, res) => {
             TypePiece: TypePiece,
             NumPiece: NumPiece,
             Localisation: Localisation,
-            CreatedBy: req.user.Id,
-            UpdateBy: req.user.Id
+            CreatedBy: 'req.user.Id',
+            UpdateBy: 'req.user.Id'
         }
     }).then(data => {
         res.status(200).send({
-            message: "Enregistrement effectué avec succès",
+            message: "Demande de remplacement de SIM effectué avec succès",
             data: data
         })
     }).catch(err => {
@@ -63,7 +55,10 @@ export const createRemplacementSIM = async (req, res) => {
             error: "Une erreur interne au serveur s'est produite"
         })
 
-    })
+    })//.finally(async () => {
+    //     console.log(error)
+    //     res.send(error)    
+    // })
 
 }
 
@@ -112,8 +107,7 @@ export const updateRemplacementSIM = async (req, res) => {
 
     const {
         NumMSISDN, AncienICCID, NewICCID, Motif,
-        TypePiece, NumPiece, NomCli,
-        PrenomCli, DateNaisCli, Localisation,
+        TypePiece, NumPiece, DateNaisCli, Localisation,
     } = req.body
 
     const remplSIM = {}
@@ -142,14 +136,6 @@ export const updateRemplacementSIM = async (req, res) => {
         remplSIM.NumPiece = NumPiece
     }
 
-    if (NomCli !== undefined && NomCli !== "" && isLettre(NomCli)) {
-        remplSIM.NomCli = NomCli
-    }
-
-    if (PrenomCli !== undefined && PrenomCli !== "" && isLettre(PrenomCli)) {
-        remplSIM.PrenomCli = PrenomCli
-    }
-
     if (DateNaisCli !== undefined && DateNaisCli !== null) {
         remplSIM.DateNaisCli = DateNaisCli
     }
@@ -162,7 +148,7 @@ export const updateRemplacementSIM = async (req, res) => {
         where: {
             Id: req.params.id
         },
-        data: identifSIM
+        data: remplSIM
 
     }).then(data => {
         return res.status(200).send({

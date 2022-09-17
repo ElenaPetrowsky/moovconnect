@@ -6,11 +6,11 @@ import {getOneRemplacementSIM, getAllRemplacementSIM, createRemplacementSIM,dele
 
 const router = express.Router();
 
-router.post('/create',authenticationToken, createRemplacementSIM);
-router.get('/', authenticationToken, getAllRemplacementSIM);
-router.get('/:id',authenticationToken, getOneRemplacementSIM);
-router.patch('/:id',authenticationToken, updateRemplacementSIM);
-router.delete('/:id',authenticationToken, deleteOneRemplacementSIM);
-router.post('/:id',authenticationToken, deleteMultipleRemplacementSIM);
+router.post('/create', createRemplacementSIM);
+router.get('/', getAllRemplacementSIM);
+router.get('/:id', getOneRemplacementSIM);
+router.patch('/:id', updateRemplacementSIM);
+router.delete('/:id', deleteOneRemplacementSIM);
+router.post('/:id', deleteMultipleRemplacementSIM);
 
 export default router;

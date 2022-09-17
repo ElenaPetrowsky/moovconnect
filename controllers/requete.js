@@ -5,5 +5,6 @@ const { PrismaClient } = Prisma
 const prisma = new PrismaClient()
 
 const createRequete = async (req, res) => {
+    let error = null
     //const {}
 }

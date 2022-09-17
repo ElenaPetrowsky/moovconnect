@@ -123,7 +123,7 @@ export const createIdentificationSIM = async (req, res) => {
 export const getOneIdentificationSIM = async (req, res) => {
     prisma.identificationSIM.findUnique({ //before --> findMany
         where: {
-            CreatedBy: req.user.Id
+            CreatedBy: req.params.id
         }
     }).then(data => {
         return res.status(200).json({
