@@ -98,6 +98,9 @@ model IdentificationSIM {
 
 model Requete {
   Id                    String                      @id @default(uuid())
+  Type                  String
+  Motif                 String
+  Description           String
   Statut                String                      @default("En attente")
   CreatedAt             DateTime                    @default(now())
   UpdatedAt             DateTime                    @updatedAt

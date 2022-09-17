@@ -41,7 +41,7 @@ export const createRemplacementSIM = async (req, res) => {
             TypePiece: TypePiece,
             NumPiece: NumPiece,
             Localisation: Localisation,
-            CreatedBy: 'req.user.Id',
+            CreatedBy: 'req.User.Id',
             UpdateBy: 'req.user.Id'
         }
     }).then(data => {
@@ -173,7 +173,7 @@ export const deleteOneRemplacementSIM = async (req, res) => {
         }
     }).then(data => {
         return res.status(200).send({
-            message: "Supprimé avec succès",
+            message: "Demande de remplacement de SIM supprimé avec succès",
             data: data
         })
     }).catch(err => {
@@ -186,9 +186,11 @@ export const deleteOneRemplacementSIM = async (req, res) => {
 
 }
 export const deleteMultipleRemplacementSIM = async (req, res) => {
+    const { deletedRempl } = req.body;
+
     prisma.RemplacementSIM.deleteMany({
         where: {
-            Id: In(req.body.Id)
+            Id: {in: deletedRempl}
         }
     }).then(data => {
         return res.status(200).send({
@@ -201,11 +203,5 @@ export const deleteMultipleRemplacementSIM = async (req, res) => {
             error: "Une erreur interne au serveur s'est produite"
         })
     })
-
-
-
-
-
-
 
 }

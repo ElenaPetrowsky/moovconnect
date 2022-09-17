@@ -9,6 +9,8 @@ import userRoute from "./routes/user.js";
 import authRoute from "./routes/auth.js";
 import identifRoute from "./routes/identificationSIM.js";
 import remplRoute from "./routes/remplacementSIM.js";
+import reqRoute from "./routes/requete.js";
+
 
 const app = express();
 
@@ -20,6 +22,8 @@ app.use("/user", userRoute);
 app.use("/auth", authRoute);
 app.use("/identif", identifRoute);
 app.use("/remplsim", remplRoute);
+app.use("/req", reqRoute);
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)

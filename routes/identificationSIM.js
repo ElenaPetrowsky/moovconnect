@@ -1,6 +1,5 @@
-// import express
 import  express  from 'express';
-
+import {authenticationToken} from "../middleware/auth.js";
 import {
         getOneIdentificationSIM, getAllIdentificationSIM, createIdentificationSIM, 
         deleteOneIdentificationSIM, updateIdentificationSIM
