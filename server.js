@@ -20,7 +20,7 @@ app.use(bodyParser.json())
 
 app.use("/user", userRoute);
 app.use("/auth", authRoute);
-app.use("/identif", identifRoute);
+app.use("/identifsim", identifRoute);
 app.use("/remplsim", remplRoute);
 app.use("/req", reqRoute);
 

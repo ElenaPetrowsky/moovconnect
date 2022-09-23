@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "nodemon start",
-    "nodemon": "nodemon server.js"
+    "dev": "nodemon server.js"
   },
   "author": "Elena Petrowsky",
   "license": "ISC",

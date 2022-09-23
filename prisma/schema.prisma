@@ -71,8 +71,8 @@ model IdentificationSIM {
   TypePiece             String
   NumPiece              String
   LieuPiece             String
-  DateEmPiece           DateTime
-  DateExPiece           DateTime
+  DateEmPiece           String
+  DateExPiece           String
   CiviliteCli           String
   GenreCli              String
   NomCli                String
@@ -82,9 +82,9 @@ model IdentificationSIM {
   ProfCli               String
   AdrGeoCli             String 
   Nationalite           String
-  Photo                 Bytes
-  PhotoVerso            Bytes
-  PhotoRecto            Bytes
+  Photo                 String
+  PhotoVerso            String
+  PhotoRecto            String
   AdrPostale            String ?
   Pays                  String ?
   Statut                String                      @default("En attente")

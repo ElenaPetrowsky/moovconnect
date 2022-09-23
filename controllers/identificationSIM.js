@@ -10,14 +10,15 @@ const prisma = new PrismaClient()
 export const createIdentificationSIM = async (req, res) => {
     let error = null
     const img = uuidv4()
-    const img_verso = uuidv4()
-    const img_recto = uuidv4()
+    const imgfile_verso = uuidv4()
+    const imgfile_recto = uuidv4()
     
 
     const {
         NomCli,PrenomCli, DateNaisCli, LieuNaisCli, GenreCli,
         ProfCli, CiviliteCli, Nationalite, AdrGeoCli, Pays, AdrPostale,
-        TelPrincipal, TelSecondaire, NumPiece, LieuPiece, DateExPiece, DateEmPiece, TypePiece
+        TelPrincipal, TelSecondaire, NumPiece, LieuPiece, DateExPiece, DateEmPiece, TypePiece,
+        Photo, PhotoRecto, PhotoVerso
     } = req.body
 
     const fileStorage = multer.diskStorage({
@@ -28,7 +29,10 @@ export const createIdentificationSIM = async (req, res) => {
             cb(null, uuidv4() + file.mimetype)
         }
     })
-
+    
+    const upload = multer({
+        storage : fileStorage
+    });
     
 
     if(NomCli === undefined || NomCli === "" || !isLettre(NomCli)){
@@ -55,7 +59,7 @@ export const createIdentificationSIM = async (req, res) => {
         error = "L'adresse géographique doit être spécifiée et pas constituée de chiffres"
     }
 
-    if(NumPiece === undefined || NumPiece === "" || !isNumPiece(NumPiece)){
+    if(NumPiece === undefined || NumPiece === "" || isNumPiece(NumPiece)){
         error = "Le numéro de la pièce doit être spécifié"
     }
 
@@ -71,12 +75,23 @@ export const createIdentificationSIM = async (req, res) => {
         error = "Le genre doit être spécifié"
     }
     
+    if(Photo === null || Photo === undefined){
+        error = "La photo du requérant est necessaire"
+    }
+
+    if(PhotoRecto === null || PhotoRecto === undefined){
+        error = "Le recto de la pièce d'identité est necessaire"
+    }
+
+    if(PhotoVerso === null || PhotoVerso === undefined){
+        error = "Le verso de la pièce d'identité est necessaire"
+    }
+    
     if(error && error !== undefined){
         res.status(400).json({
             error: error
         })
     }
-    // var dateInStantT = new Date(Date.now()).toISOString();
     
     prisma.identificationSIM.create({
         data: {
@@ -98,13 +113,13 @@ export const createIdentificationSIM = async (req, res) => {
             AdrGeoCli: AdrGeoCli,
             Nationalite: Nationalite,
             Photo: img,
-            PhotoVerso: img_verso,
-            PhotoRecto: img_recto,
+            PhotoVerso: imgfile_verso,
+            PhotoRecto: imgfile_recto,
             AdrPostale: AdrPostale,
             Pays: Pays,
             GenreCli: GenreCli,
-            CreatedBy: req.user.Id,
-            UpdateBy: req.user.Id
+            CreatedBy: 'req.user.Id',
+            UpdateBy: 'req.user.Id'
         }
     }).then(data =>{
             res.status(200).send({
@@ -116,6 +131,11 @@ export const createIdentificationSIM = async (req, res) => {
         res.status(500).json({
             error: "Une erreur interne au serveur s'est produite"
         })
+        // res.status(400).json({
+        //     error : {
+        //         message : err.message
+        //     }
+        // })        
 
       })
 
@@ -123,7 +143,7 @@ export const createIdentificationSIM = async (req, res) => {
 export const getOneIdentificationSIM = async (req, res) => {
     prisma.identificationSIM.findUnique({ //before --> findMany
         where: {
-            CreatedBy: req.params.id
+            Id: req.params.id
         }
     }).then(data => {
         return res.status(200).json({
@@ -162,10 +182,14 @@ export const updateIdentificationSIM = async (req, res) => {
     const {
         NomCli,PrenomCli, DateNaisCli, LieuNaisCli, GenreCli,
         ProfCli, CiviliteCli, Nationalite, AdrGeoCli, Pays, AdrPostale,
-        TelPrincipal, TelSecondaire, NumPiece, LieuPiece, DateExPiece, DateEmPiece, TypePiece
+        TelPrincipal, TelSecondaire, NumPiece, LieuPiece, DateExPiece,
+        DateEmPiece, TypePiece, Photo, PhotoRecto, PhotoVerso
     } = req.body
 
     const identifSIM = {}
+
+    identifSIM.AdrPostale = AdrPostale
+    identifSIM.Pays = Pays        
 
     if(NomCli !== undefined && NomCli !== "" && isLettre(NomCli)){
         identifSIM.NomCli = NomCli
@@ -199,13 +223,11 @@ export const updateIdentificationSIM = async (req, res) => {
         identifSIM.AdrGeoCli = AdrGeoCli
     }
 
-    if(Pays !== undefined && Pays !== "" && isLettre(Pays)){
-        identifSIM.Pays = Pays
-    }
+    // if(Pays !== undefined && Pays !== "" && isLettre(Pays)){
+    // }
 
-    if(AdrPostale !== undefined && AdrPostale !== ""){
-        identifSIM.AdrPostale = AdrPostale
-    }
+    // if(AdrPostale !== undefined && AdrPostale !== ""){
+    // }
 
     if(TelPrincipal !== undefined && TelPrincipal !== ""){
         identifSIM.TelPrincipal = TelPrincipal
@@ -239,10 +261,21 @@ export const updateIdentificationSIM = async (req, res) => {
         identifSIM.GenreCli = GenreCli
     }
 
+    if(Photo !== undefined && Photo !== ""){
+        identifSIM.Photo = Photo
+    }
+
+    if(PhotoRecto !== undefined && PhotoRecto !== ""){
+        identifSIM.PhotoRecto = PhotoRecto
+    }
+    if(PhotoVerso !== undefined && PhotoVerso !== ""){
+        identifSIM.PhotoVerso = PhotoVerso
+    }
+
 
     prisma.identificationSIM.update({
         where: {
-            Id: req.user.Id
+            Id: req.params.Id
         },
         data: identifSIM
     
